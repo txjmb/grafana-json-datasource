@@ -231,6 +231,7 @@ const replaceMacros = (str: string, range?: TimeRange) => {
             tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
             return tempDate.toISOString();
         })
+  : str;
 };
 
 export const groupBy = (frame: DataFrame, fieldName: string): DataFrame[] => {
