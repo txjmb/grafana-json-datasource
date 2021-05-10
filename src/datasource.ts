@@ -217,7 +217,7 @@ const replaceMacros = (str: string, range?: TimeRange) => {
         .replace(/\$__unixEpochTo\(\)/g, range.to.unix().toString()))
 };
 
-const replaceIsoMacros = (str: string) => {
+const replaceIsoMacros = (str: string, range TimeRange) => {
     const isoFromRegex = /(\$__isoFrom\()(.*)\)/
     const isoToRegex = /(\$__isoTo\()(.*)\)/
     return str.replace(isoToRegex, () => { 
@@ -228,7 +228,7 @@ const replaceIsoMacros = (str: string) => {
               return tempDate.toISOString();
             }).replace(isoFromRegex, () => { 
               var tempDate:Date = new Date(range.from);
-              var param1:string = myString.replace(isoFromRegex, '$2');
+              var param1:string = str.replace(isoFromRegex, '$2');
               var minuteAdjust = param1 === "" ? 0 : parseInt(param1,10);
               tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
               return tempDate.toISOString();
