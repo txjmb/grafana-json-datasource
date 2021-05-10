@@ -211,28 +211,29 @@ const replace = (scopedVars?: any, range?: TimeRange) => (str: string): string =
 // replaceMacros substitutes all available macros with their current value.
 // isoFromRegex and isoToRegex have an optional integer minute offset parameter
 const replaceMacros = (str: string, range?: TimeRange) => {
-  const isoFromRegex = /(\$__isoFrom\()(.*)\)/
-  const isoToRegex = /(\$__isoTo\()(.*)\)/
   return range
-    ? str
+    ? () => replaceIsoMacros(str
         .replace(/\$__unixEpochFrom\(\)/g, range.from.unix().toString())
-        .replace(/\$__unixEpochTo\(\)/g, range.to.unix().toString())
-        .replace(isoFromRegex, () => { 
-            var tempDate:Date = new Date(range.from);
-            var param1:string = myString.replace(isoFromRegex, '$2');
-            var minuteAdjust = param1 === "" ? 0 : parseInt(param1,10);
-            tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
-            return tempDate.toISOString();
-        })
-        .replace(isoToRegex, () => { 
-            var tempDate:Date = new Date(range.to);
-            var param1:string = myString.replace(isoToRegex, '$2');
-            var minuteAdjust = param1 === "" ? 0 : parseInt(param1,10);
-            tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
-            return tempDate.toISOString();
-        })
-  : str;
+        .replace(/\$__unixEpochTo\(\)/g, range.to.unix().toString()))
 };
+
+const replaceIsoMacros = (str: string) => {
+    const isoFromRegex = /(\$__isoFrom\()(.*)\)/
+    const isoToRegex = /(\$__isoTo\()(.*)\)/
+    return str.replace(isoToRegex, () => { 
+              var tempDate:Date = new Date(range.to);
+              var param1:string = str.replace(isoToRegex, '$2');
+              var minuteAdjust = param1 === "" ? 0 : parseInt(param1,10);
+              tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
+              return tempDate.toISOString();
+            }).replace(isoFromRegex, () => { 
+              var tempDate:Date = new Date(range.from);
+              var param1:string = myString.replace(isoFromRegex, '$2');
+              var minuteAdjust = param1 === "" ? 0 : parseInt(param1,10);
+              tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
+              return tempDate.toISOString();
+            });
+}
 
 export const groupBy = (frame: DataFrame, fieldName: string): DataFrame[] => {
   const groupByField = frame.fields.find((field) => field.name === fieldName);
