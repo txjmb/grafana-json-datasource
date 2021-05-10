@@ -218,7 +218,7 @@ const replaceMacros = (str: string, range?: TimeRange) => {
     : str;
 };
 
-const replaceIsoMacros = (str: string, range TimeRange) => {
+const replaceIsoMacros = (str: string, range: TimeRange) => {
     const isoFromRegex = /(\$__isoFrom\()(.*)\)/
     const isoToRegex = /(\$__isoTo\()(.*)\)/
     return str.replace(isoToRegex, () => { 
