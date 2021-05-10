@@ -219,24 +219,24 @@ const replaceMacros = (str: string, range?: TimeRange) => {
 };
 
 const replaceIsoMacros = (str: string, range: TimeRange) => {
-    const isoFromRegex = /(\$__isoFrom\()(.*)\)/;
-    const isoToRegex = /(\$__isoTo\()(.*)\)/;
-    var param1:string = str.replace(isoToRegex, '$2');
-    var tempDate:Date = new Date(range.to);
-    var minuteAdjust = param1 === "" ? 0 : parseInt(param1,10);
-  
-    tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
-    str = str.replace(isoToRegex, tempDate.toISOString());
-  
-    param1:string = str.replace(isoFromRegex, '$2');
-    tempDate:Date = new Date(range.from);
-    minuteAdjust = param1 === "" ? 0 : parseInt(param1,10);
-  
-    tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
-    str = str.replace(isoFromRegex, tempDate.toISOString());
-  
-    return str;
-}
+  const isoFromRegex = /(\$__isoFrom\()(.*)\)/;
+  const isoToRegex = /(\$__isoTo\()(.*)\)/;
+  var param1: string = str.replace(isoFromRegex, '$2');
+  var tempDate = new Date(range.from.toISOString());
+  var minuteAdjust = param1 === '' ? 0 : parseInt(param1, 10);
+
+  tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
+  str = str.replace(isoToRegex, tempDate.toISOString());
+
+  param1 = str.replace(isoToRegex, '$2');
+  tempDate = new Date(range.to.toISOString());
+  minuteAdjust = param1 === '' ? 0 : parseInt(param1, 10);
+
+  tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
+  str = str.replace(isoToRegex, tempDate.toISOString());
+
+  return str;
+};
 
 const test1 = 
 
