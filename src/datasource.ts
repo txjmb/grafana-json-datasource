@@ -220,14 +220,14 @@ const replaceMacros = (str: string, range?: TimeRange) => {
         .replace(isoFromRegex, () => { 
             var tempDate:Date = new Date(myDate);
             var param1:string = myString.replace(isoFromRegex, '$2');
-            var minuteAdjust = param1 == "" ? 0 : parseInt(param1);
+            var minuteAdjust = param1 === "" ? 0 : parseInt(param1,10);
             tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
             return tempDate.toISOString();
         })
         .replace(isoToRegex, () => { 
             var tempDate:Date = new Date(myDate);
             var param1:string = myString.replace(isoToRegex, '$2');
-            var minuteAdjust = param1 == "" ? 0 : parseInt(param1);
+            var minuteAdjust = param1 === "" ? 0 : parseInt(param1,10);
             tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
             return tempDate.toISOString();
         })
