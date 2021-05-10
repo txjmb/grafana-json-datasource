@@ -219,22 +219,23 @@ const replaceMacros = (str: string, range?: TimeRange) => {
 };
 
 const replaceIsoMacros = (str: string, range: TimeRange) => {
-    const isoFromRegex = /(\$__isoFrom\()(.*)\)/
-    const isoToRegex = /(\$__isoTo\()(.*)\)/
+    const isoFromRegex = /(\$__isoFrom\()(.*)\)/;
+    const isoToRegex = /(\$__isoTo\()(.*)\)/;
     str = str.replace(isoToRegex, () => { 
               var tempDate:Date = new Date(range.to);
               var param1:string = str.replace(isoToRegex, '$2');
               var minuteAdjust = param1 === "" ? 0 : parseInt(param1,10);
               tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
               return tempDate.toISOString();
+    });
     str = str.replace(isoFromRegex, () => { 
               var tempDate:Date = new Date(range.from);
               var param1:string = str.replace(isoFromRegex, '$2');
               var minuteAdjust = param1 === "" ? 0 : parseInt(param1,10);
               tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
               return tempDate.toISOString();
-            });
-      return str;
+    });
+    return str;
 }
 
 export const groupBy = (frame: DataFrame, fieldName: string): DataFrame[] => {
