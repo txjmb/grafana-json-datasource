@@ -214,7 +214,7 @@ const replaceMacros = (str: string, range?: TimeRange) => {
   return range
     ? () => replaceIsoMacros(str
         .replace(/\$__unixEpochFrom\(\)/g, range.from.unix().toString())
-        .replace(/\$__unixEpochTo\(\)/g, range.to.unix().toString()))
+        .replace(/\$__unixEpochTo\(\)/g, range.to.unix().toString()), range)
     : str;
 };
 
