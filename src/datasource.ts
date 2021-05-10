@@ -209,14 +209,28 @@ const replace = (scopedVars?: any, range?: TimeRange) => (str: string): string =
 };
 
 // replaceMacros substitutes all available macros with their current value.
+// isoFromRegex and isoToRegex have an optional integer minute offset parameter
 const replaceMacros = (str: string, range?: TimeRange) => {
+  const isoFromRegex = /(\$__isoFrom\()(.*)\)/
+  const isoToRegex = /(\$__isoTo\()(.*)\)/
   return range
     ? str
         .replace(/\$__unixEpochFrom\(\)/g, range.from.unix().toString())
         .replace(/\$__unixEpochTo\(\)/g, range.to.unix().toString())
-        .replace(/\$__isoFrom\(\)/g, range.from.toISOString().toString())
-        .replace(/\$__isoTo\(\)/g, range.to.toISOString().toString())
-    : str;
+        .replace(isoFromRegex, () => { 
+            var tempDate:Date = new Date(myDate);
+            var param1:string = myString.replace(isoFromRegex, '$2');
+            var minuteAdjust = param1 == "" ? 0 : parseInt(param1);
+            tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
+            return tempDate.toISOString();
+        })
+        .replace(isoToRegex, () => { 
+            var tempDate:Date = new Date(myDate);
+            var param1:string = myString.replace(isoToRegex, '$2');
+            var minuteAdjust = param1 == "" ? 0 : parseInt(param1);
+            tempDate.setMinutes(tempDate.getMinutes() + minuteAdjust);
+            return tempDate.toISOString();
+        })
 };
 
 export const groupBy = (frame: DataFrame, fieldName: string): DataFrame[] => {
