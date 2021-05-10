@@ -212,7 +212,7 @@ const replace = (scopedVars?: any, range?: TimeRange) => (str: string): string =
 // isoFromRegex and isoToRegex have an optional integer minute offset parameter
 const replaceMacros = (str: string, range?: TimeRange) => {
   return range
-    ? () => replaceIsoMacros(str
+    ? replaceIsoMacros(str
         .replace(/\$__unixEpochFrom\(\)/g, range.from.unix().toString())
         .replace(/\$__unixEpochTo\(\)/g, range.to.unix().toString()), range)
     : str;
